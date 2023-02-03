@@ -29,7 +29,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 mongoose.set('strictQuery', true);
-mongoose.connect("mongodb://127.0.0.1:27017/userDB");
+
+mongoose.connect('mongodb+srv://ufaq302:khan12345@cluster0.1mekptf.mongodb.net/?retryWrites=true&w=majority/test');
+// mongodb+srv://ufaq302:<password>@cluster0.1mekptf.mongodb.net/?retryWrites=true&w=majority
 
 const userSchema = new mongoose.Schema({
     email: String,
@@ -95,7 +97,7 @@ passport.use(new FacebookStrategy({
     callbackURL: "http://localhost:3000/auth/facebook/secrets"
 },
     function (accessToken, refreshToken, profile, cb) {
-        User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+        User.findOrCreate({ googleId: profile.id }, function (err, user) {
             console.log("Facebook Auth Processed");
             return cb(err, user);
         });
@@ -111,8 +113,6 @@ app.get('/auth/facebook/secrets',
         // Successful authentication, redirect home.
         res.redirect('/secrets');
     });
-
-
 
 
 
