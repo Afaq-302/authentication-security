@@ -90,8 +90,8 @@ app.get("/auth/google/secrets",
 
 //Facebook Auth
 passport.use(new FacebookStrategy({
-    clientID: "1850457058648972",
-    clientSecret: "5183d874fcda9ca6cc67801f769b18de",
+    clientID: process.env.FB_ID,
+    clientSecret: process.env.FB_SECRET,
     callbackURL: "http://localhost:3000/auth/facebook/secrets"
 },
     function (accessToken, refreshToken, profile, cb) {
