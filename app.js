@@ -29,8 +29,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 mongoose.set('strictQuery', true);
-
-mongoose.connect('mongodb+srv://ufaq302:khan12345@cluster0.1mekptf.mongodb.net/?retryWrites=true&w=majority/test');
+let URI="mongodb+srv://ufaq302:khan12345@cluster0.1mekptf.mongodb.net/?retryWrites=true&w=majority/test"
+mongoose.connect(URI);
 // mongodb+srv://ufaq302:<password>@cluster0.1mekptf.mongodb.net/?retryWrites=true&w=majority
 
 const userSchema = new mongoose.Schema({
@@ -65,7 +65,7 @@ passport.deserializeUser(function (user, cb) {
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "https://secrets-app-mn1w.onrender.com/secrets",
+    callbackURL: "http://localhost:3000/auth/google/secrets",
     userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
 },
     function (accessToken, refreshToken, profile, cb) {
