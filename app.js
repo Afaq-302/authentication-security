@@ -222,7 +222,7 @@ app.post("/login", function (req, res) {
 
 
 
-
-app.listen(3000, function () {
+let port = 3000 || process.env.PORT;
+app.listen(port, function () {
     console.log("Started on Port: 3000");
 })
