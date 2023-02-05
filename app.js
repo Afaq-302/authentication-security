@@ -35,13 +35,13 @@ mongoose.connect(URI);
 // mongodb+srv://ufaq302:<password>@cluster0.1mekptf.mongodb.net/?retryWrites=true&w=majority
 
 const userSchema = new mongoose.Schema({
-    email: String,
+    username: String,
     password: String,
     googleId: String,
     secret: String
 });
 
-userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(passportLocalMongoose, { usernameUnique: false });
 userSchema.plugin(findOrCreate);
 
 
@@ -72,10 +72,8 @@ passport.use(new GoogleStrategy({
     userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
 },
     function (accessToken, refreshToken, profile, cb) {
-    console.log(`${clientID}`)
-
         console.log(profile)
-        User.findOrCreate({ googleId: profile.id },
+        User.findOrCreate({ googleId: profile.id, username: profile.id },
             function (err, user) {
                 return cb(err, user);
             });
