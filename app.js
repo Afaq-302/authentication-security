@@ -1,5 +1,5 @@
 //jshint esversion:6
-require('dotenv').config();
+require('dotenv').config()
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
@@ -9,7 +9,7 @@ const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const FacebookStrategy = require("passport-facebook");
+const FacebookStrategy = require('passport-facebook').Strategy;
 const findOrCreate = require("mongoose-findorcreate");
 
 const app = express();
@@ -72,6 +72,8 @@ passport.use(new GoogleStrategy({
     userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
 },
     function (accessToken, refreshToken, profile, cb) {
+    console.log(`${clientID}`)
+
         console.log(profile)
         User.findOrCreate({ googleId: profile.id },
             function (err, user) {
