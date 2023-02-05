@@ -9,7 +9,7 @@ const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const FacebookStrategy = require('passport-facebook').Strategy;
+const FacebookStrategy = require('passport-facebook');
 const findOrCreate = require("mongoose-findorcreate");
 
 const app = express();
@@ -253,7 +253,6 @@ app.post("/login", function (req, res) {
 
 
 
-let port = 3000 || process.env.PORT;
-app.listen(port, function () {
-    console.log("Started on Port: 3000");
-})
+app.listen(process.env.PORT || 3000, function () {
+    console.log("Server Started: PORT");
+});
