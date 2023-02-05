@@ -95,8 +95,8 @@ app.get("/auth/google/secrets",
 
 //Facebook Auth
 passport.use(new FacebookStrategy({
-    clientID: process.env.FB_ID,
-    clientSecret: process.env.FB_SECRET,
+    clientID: process.env.APP_ID,
+    clientSecret: process.env.APP_SECRET,
     // callbackURL: "http://localhost:3000/auth/facebook/secrets"
     callbackURL: "https://secrets-app-mn1w.onrender.com/auth/facebook/secrets"
 },
