@@ -29,8 +29,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 mongoose.set('strictQuery', true);
-// let URI = "mongodb+srv://ufaq302:khan12345@cluster0.1mekptf.mongodb.net/?retryWrites=true&w=majority/test"
-let URI = "mongodb://127.0.0.1:27017/userDB"
+let URI = "mongodb+srv://ufaq302:khan12345@cluster0.1mekptf.mongodb.net/?retryWrites=true&w=majority/test"
+// let URI = "mongodb://127.0.0.1:27017/userDB"
 mongoose.connect(URI);
 // mongodb+srv://ufaq302:<password>@cluster0.1mekptf.mongodb.net/?retryWrites=true&w=majority
 
