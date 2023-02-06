@@ -29,7 +29,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 mongoose.set('strictQuery', true);
-let URI = "mongodb+srv://ufaq302:khan12345@cluster0.1mekptf.mongodb.net/?retryWrites=true&w=majority/test"
+let URI = "mongodb+srv://ufaq302:khan12345@cluster0.1mekptf.mongodb.net/test"
 // let URI = "mongodb://127.0.0.1:27017/userDB"
 mongoose.connect(URI);
 // mongodb+srv://ufaq302:<password>@cluster0.1mekptf.mongodb.net/?retryWrites=true&w=majority
@@ -82,7 +82,7 @@ passport.use(new GoogleStrategy({
 
 app.get("/auth/google", passport.authenticate("google", { scope: ['profile'] }),
     function (req, res) {
-        console.log("Successfully Moved to Google Auth");
+        console.log("Successfully Logged in Google!");
     }
 );
 
@@ -97,8 +97,8 @@ app.get("/auth/google/secrets",
 passport.use(new FacebookStrategy({
     clientID: process.env.APP_ID,
     clientSecret: process.env.APP_SECRET,
-    // callbackURL: "http://localhost:3000/auth/facebook/secrets"
-    callbackURL: "https://secrets-app-jbj1.onrender.com/auth/facebook/secrets"
+    callbackURL: "http://localhost:3000/auth/facebook/secrets"
+    // callbackURL: "https://secrets-app-jbj1.onrender.com/auth/facebook/secrets"
 },
     function (accessToken, refreshToken, profile, cb) {
         console.log(profile)
@@ -161,7 +161,7 @@ app.post("/submit", function (req, res) {
     User.findById(req.user.id, function (err, foundUser) {
         if (err) {
             console.log(err);
-        } else {
+            // } else {
             if (foundUser) {
                 foundUser.secret = submittedSecret;
                 foundUser.save(function () {
