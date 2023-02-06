@@ -68,8 +68,8 @@ passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     // callbackURL: "http://localhost:3000/auth/google/secrets",
-    callbackURL: "https://secrets-app-mn1w.onrender.com/auth/google/secrets"
-    // userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+    callbackURL: "https://secrets-app-jbj1.onrender.com/auth/google/secrets",
+    userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
 },
     function (accessToken, refreshToken, profile, cb) {
         console.log(profile)
@@ -98,7 +98,7 @@ passport.use(new FacebookStrategy({
     clientID: process.env.APP_ID,
     clientSecret: process.env.APP_SECRET,
     // callbackURL: "http://localhost:3000/auth/facebook/secrets"
-    callbackURL: "https://secrets-app-mn1w.onrender.com/auth/facebook/secrets"
+    callbackURL: "https://secrets-app-jbj1.onrender.com/auth/facebook/secrets"
 },
     function (accessToken, refreshToken, profile, cb) {
         console.log(profile)
