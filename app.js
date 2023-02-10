@@ -1,4 +1,5 @@
 //jshint esversion:6
+
 require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -28,11 +29,12 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+
 mongoose.set('strictQuery', true);
-let URI = "mongodb+srv://ufaq302:khan12345@cluster0.1mekptf.mongodb.net/test"
+// // let URI = "mongodb+srv://ufaq302:khan12345@cluster0.1mekptf.mongodb.net/test"
 // let URI = "mongodb://127.0.0.1:27017/userDB"
-mongoose.connect(URI);
-// mongodb+srv://ufaq302:<password>@cluster0.1mekptf.mongodb.net/?retryWrites=true&w=majority
+// mongoose.connect(URI);
+// "mongodb+srv://ufaq302:<password>@cluster0.1mekptf.mongodb.net/?retryWrites=true&w=majority/test"
 
 const userSchema = new mongoose.Schema({
     username: String,
@@ -62,16 +64,40 @@ passport.deserializeUser(function (user, cb) {
     });
 });
 
+// let hostedDB = "mongodb+srv://ufaq302:khan12345@cluster0.1mekptf.mongodb.net/test"
+// let localDB = "mongodb://127.0.0.1:27017/userDB"
+var dbURL= null;
+var googleCallbackURL = null;
+// var facebookCallbackURL = null;
+if (process.env.NODE_ENV === "development") {
+    googleCallbackURL = process.env.DEV_GOOGLE_URL;
+    facebookCallbackURL = process.env.DEV_FACEBOOK_URL;
+    dbURL = process.env.localDB;
+    
+} else {
+    googleCallbackURL = process.env.PROD_GOOGLE_URL;
+    facebookCallbackURL = process.env.PROD_FACEBOOK_URL;
+    dbURL = process.env.hostedDB;
+    console.log(process.env.NODE_ENV);
+}
+
+console.log(googleCallbackURL);
+console.log(facebookCallbackURL);
+console.log(dbURL);
+// mongoose.connect(dbURL);
+
 
 // Google Auth
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: googleCallbackURL
     // callbackURL: "http://localhost:3000/auth/google/secrets",
-    callbackURL: "https://secrets-app-jbj1.onrender.com/auth/google/secrets",
-    userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+    // callbackURL: `https://secrets-app-jbj1.onrender.com/auth/google/secrets`,
+    // userProfileURL: https://www.googleapis.com/oauth2/v3/userinfo
 },
     function (accessToken, refreshToken, profile, cb) {
+        var hostName = req.headers.host;
         console.log(profile)
         User.findOrCreate({ googleId: profile.id, username: profile.id },
             function (err, user) {
@@ -97,8 +123,10 @@ app.get("/auth/google/secrets",
 passport.use(new FacebookStrategy({
     clientID: process.env.APP_ID,
     clientSecret: process.env.APP_SECRET,
+    // callbackURL: facebookCallbackURL
     // callbackURL: "http://localhost:3000/auth/facebook/secrets"
-    callbackURL: "https://secrets-app-jbj1.onrender.com/auth/facebook/secrets"
+    // callbackURL: "https://secrets-app-jbj1.onrender.com/auth/facebook/secrets"
+    // callbackURL: `https://localhost:3000/auth/facebook/secrets`
 },
     function (accessToken, refreshToken, profile, cb) {
         console.log(profile)
@@ -123,6 +151,7 @@ app.get('/auth/facebook/secrets',
 
 app.get("/", function (req, res) {
     res.render("home");
+
 });
 
 app.get("/login", function (req, res) {
@@ -157,7 +186,6 @@ app.get("/submit", function (req, res) {
 
 app.post("/submit", function (req, res) {
     const submittedSecret = req.body.secret;
-    console.log(req.user.id);
     User.findById(req.user.id, function (err, foundUser) {
         if (err) {
             console.log(err);
@@ -253,6 +281,8 @@ app.post("/login", function (req, res) {
 
 
 
-app.listen(process.env.PORT || 3000, function () {
+
+let port = process.env.PORT || 3000;
+app.listen(port, function () {
     console.log("Server Started: PORT");
 });
